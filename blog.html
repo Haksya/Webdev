@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ulasan Buku & Film</title>>
+</head>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f5f3ef;
+        margin: 0;
+        padding: 20px;
+      }
+      
+      .container {
+        max-width: 900px;
+        margin: auto;
+      }
+      
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      
+      form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+      
+      form input, form select, form textarea, form button {
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      
+      form button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      
+      form button:hover {
+        background-color: #0056b3;
+      }
+      
+      .reviews {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+      
+      .review {
+        background: #fffef5;
+        border: 2px solid #f0e6cc;
+        padding: 20px;
+        width: 250px;
+        min-height: 300px;
+        border-radius: 12px;
+        box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow-wrap: break-word;
+      }
+      
+      .review h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+      }
+      
+      .review p {
+        font-size: 14px;
+        line-height: 1.4;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        flex-grow: 1;
+      }
+      
+      .review img {
+        width: 100%;
+        height: auto;
+        margin-top: 10px;
+        border-radius: 8px;
+      }
+      
+      .review-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+      }
+      
+      .review-buttons button {
+        padding: 5px 10px;
+        font-size: 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      
+      .edit {
+        background-color: #4caf50;
+        color: white;
+      }
+      
+      .edit:hover {
+        background-color: #388e3c;
+      }
+      
+      .delete {
+        background-color: #f44336;
+        color: white;
+      }
+      
+      .delete:hover {
+        background-color: #c62828;
+      }
+      
+
+      .review-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    
+    .review-buttons button {
+        padding: 8px 12px;
+        font-size: 14px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        width: 45%; /* Membuat tombol lebih lebar dan seimbang */
+    }
+    
+    .review-buttons button:hover {
+        transform: scale(1.05); /* Efek hover dengan sedikit zoom */
+    }
+    
+    .edit {
+        background-color: #4caf50;
+        color: white;
+    }
+    
+    .edit:hover {
+        background-color: #388e3c;
+    }
+    
+    .delete {
+        background-color: #f44336;
+        color: white;
+    }
+    
+    .delete:hover {
+        background-color: #c62828;
+    }
+    
+</style>
+<body>
+  <div class="container">
+    <h1>Ulasan Buku & Film</h1>
+    <form id="reviewForm">
+      <input type="text" id="title" placeholder="Judul..." required>
+      <select id="type" required>
+        <option value="">Pilih Kategori</option>
+        <option value="Buku">Buku</option>
+        <option value="Film">Film</option>
+      </select>
+      <textarea id="reviewText" placeholder="Tulis ulasanmu..." required></textarea>
+      <input type="file" id="imageInput" accept="image/*">
+      <button type="submit">Tambah Ulasan</button>
+    </form>
+
+    <div class="reviews" id="reviewsSection"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+<script>
+    const form = document.getElementById('reviewForm');
+const reviewsSection = document.getElementById('reviewsSection');
+const imageInput = document.getElementById('imageInput');
+
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const title = document.getElementById('title').value;
+  const type = document.getElementById('type').value;
+  const text = document.getElementById('reviewText').value;
+  const imageFile = imageInput.files[0];
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    createReview(title, type, text, e.target.result);
+  };
+
+  if (imageFile) {
+    reader.readAsDataURL(imageFile);
+  } else {
+    createReview(title, type, text, '');
+  }
+
+  form.reset();
+});
+
+function createReview(title, type, text, imageSrc) {
+  const reviewDiv = document.createElement('div');
+  reviewDiv.classList.add('review');
+
+  reviewDiv.innerHTML = `
+    <h3>${title} <small>(${type})</small></h3>
+    <p>${text}</p>
+    ${imageSrc ? `<img src="${imageSrc}" alt="Gambar">` : ''}
+    <div class="review-buttons">
+      <button class="edit">Edit</button>
+      <button class="delete">Hapus</button>
+    </div>
+  `;
+
+  reviewsSection.appendChild(reviewDiv);
+
+  reviewDiv.querySelector('.edit').addEventListener('click', function() {
+    document.getElementById('title').value = title;
+    document.getElementById('type').value = type;
+    document.getElementById('reviewText').value = text;
+    reviewDiv.remove();
+  });
+
+  reviewDiv.querySelector('.delete').addEventListener('click', function() {
+    reviewDiv.remove();
+  });
+}
+
+</script>
+</html>
+
