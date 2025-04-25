@@ -15,12 +15,51 @@ header {
     padding: 2rem 4rem;
 }
 
-main {
-    display: flex;
-    padding: 2rem 4rem;
-}
- 
+h1 {
+    
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+   
+  }
+  .text-content p {
+    margin-bottom: 0;
+  }
   
+  .text-content h1 {
+    margin-top: 0;
+  }
+  
+  
+  
+main {
+    padding: 2rem 4rem;
+    font-size: large;
+}
+
+.person {
+    height: 550px;
+    display: grid;
+    grid-template-columns: 1fr  1fr;
+}
+
+.person-image img {
+    width: 75%;
+   
+}
+
+
+.person-image {
+    display: flex;
+    justify-content: flex-end; /* ke kanan */
+    align-items: center;
+}
+
+
+
+
+
+
+
 nav ul {
     display: flex;
     gap: 2rem;
